@@ -58,7 +58,7 @@ Also we can see if any value is lower or higher inmediatly and react to that.
 ### Classes and Methods
 - **`leds_controller.py`**
 -Module where we defined the method set_color
-```pyhton
+```python
 import machine, neopixel
 n = 12 
 p = 5  
@@ -71,7 +71,7 @@ def set_color(r, g, b, n):
   -**`set_color(r, g, b, n)`**: Changes the color of the NeoPixel LEDs.
   
 - **`main.py`**
-```pyhton
+```python
 import time
 import threading
 from machine import I2C, Pin, ADC 
