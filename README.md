@@ -199,10 +199,10 @@ except KeyboardInterrupt:
     # Stop program execution
     sys.exit(0)
 ```
-  -Configures sensors for temperature, humidity, light, and soil moisture.
-  -Starts the web server and updates the OLED screen with collected data.
-  -Implements light control using a photoresistor.
-  -Runs the server in a separate thread for real-time data updates.
+-Configures sensors for temperature, humidity, light, and soil moisture.
+-Starts the web server and updates the OLED screen with collected data.
+-Implements light control using a photoresistor.
+-Runs the server in a separate thread for real-time data updates.
 
 - **`server.py`**
 -Module where we defined the WiFi connections and the server for the web page
@@ -365,14 +365,14 @@ class Display(sh):
 ```
 -Display class: Manages the OLED display using the SH1106 driver.
   - Methods:
--clear_display(val=0): Clears the screen.
--how_display(): Refreshes the screen to show new content.
--write_text(text, start, row): Writes text at a specific position.
+  - clear_display(val=0): Clears the screen.
+  - how_display(): Refreshes the screen to show new content.
+  - write_text(text, start, row): Writes text at a specific position.
 
 - **`buzzer.py`**  
   - Buzzer class: Controls a buzzer using PWM.
   - Method:
--sound_buzzer(x): Activates the buzzer (1 for on, 0 for off).
+  - sound_buzzer(x): Activates the buzzer (1 for on, 0 for off).
 
 - **`soil_moisture.py`**
 ```python
@@ -391,7 +391,7 @@ class SoilMoisture:
  ```
   - SoilMoisture class: Reads soil moisture levels.
   - Method:
--update_soil_value(): Returns the current ADC value of soil moisture.
+  - update_soil_value(): Returns the current ADC value of soil moisture.
 
 ### External Modules
 - **`neopixel`**: Controls the NeoPixel LEDs.
