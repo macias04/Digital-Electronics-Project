@@ -1,38 +1,107 @@
+"""
+This module implements a simple web server for an ESP32 microcontroller that serves sensor data 
+for an indoor gardening application. It connects to a specified Wi-Fi network and listens for 
+incoming client connections. The server responds to requests for sensor data in JSON format 
+and serves an HTML page with a chart displaying the data.
+
+MIT License: This module is open source and can be freely used, modified, and distributed.
+
+Classes:
+    - Server: Manages Wi-Fi connection and serves sensor data over HTTP.
+
+Usage:
+    1. Set the SSID and PASSWORD variables with the Wi-Fi credentials.
+    2. Create an instance of the Server class with the sensor data.
+    3. The server will automatically connect to Wi-Fi and start listening for requests.
+
+Example:
+    sensor_data = {
+        'temp': 25,
+        'humid': 60,
+        'light': 300,
+        'soil': 40
+    }
+    server = Server(sensor_data)
+"""
+
+
+
 import network
 import socket
 import time
 
-SSID = 'IWN'
-PASSWORD = 'c3z35gyy'
+SSID = ''
+PASSWORD = ''
 
 class Server:
     
     def __init__(self, sensor_data):
-        self.sensor_data = sensor_data  # Store a reference to the sensor data
+        self.sensor_data = sensor_data 
         self.sock = socket.socket()
-        self.cl = None
+        self.cl = None 
         self.addr = socket.getaddrinfo('0.0.0.0', 80)[0][4]
         self.ip_address = self.connect_wifi()
         self.web_server()
+    
 
     def connect_wifi(self):
+        """
+    Connects the ESP32 to a specified Wi-Fi network.
+
+    This method activates the WLAN interface, connects to the Wi-Fi using the provided SSID and password,
+    and waits for the connection to be established. It retrieves and stores the assigned IP address in
+    `self.ip_address`, which is also printed to the console.
+
+    Returns:
+        str: The IP address assigned to the ESP32 after a successful connection.
+
+    Example:
+        Ensure that SSID and PASSWORD are defined with the correct Wi-Fi credentials before calling this method.
+    """
+
         wlan = network.WLAN(network.STA_IF)
-        wlan.active(False)  # Disable the Wi-Fi interface
-        time.sleep(1)       # Wait a moment
-        wlan.active(True)   # Re-enable the Wi-Fi interface
+        wlan.active(False)  
+        time.sleep(1)       
+        wlan.active(True)   
         wlan.connect(SSID, PASSWORD)
 
-        # Wait for connection
+        
         while not wlan.isconnected():
             print("Connecting to WiFi...")
             time.sleep(1)
 
         print("Connected to WiFi")
-        self.ip_address = wlan.ifconfig()[0]  # Get the IP address
+        self.ip_address = wlan.ifconfig()[0]  
         print("IP Address:", self.ip_address)
         return self.ip_address
 
     def web_server(self):
+        """
+    Starts a simple web server that listens for incoming client connections and serves sensor data.
+
+    This method binds the server socket to the specified address and listens for incoming connections.
+    When a client connects, it accepts the connection and processes the incoming request. If the request
+    is for sensor data (i.e., a GET request to "/data"), it responds with a JSON object containing the
+    current temperature, humidity, light, and soil moisture values. For any other request, it serves
+    an HTML page that includes a chart displaying the sensor data.
+
+    The server runs indefinitely, handling one client connection at a time. It prints connection details
+    and the received request to the console for debugging purposes.
+
+    Attributes:
+        self.sock (socket.socket): The socket object used for the server.
+        self.addr (tuple): The address (host, port) to which the server is bound.
+        self.sensor_data (dict): A dictionary containing sensor readings with keys 'temp', 'humid',
+                                 'light', and 'soil'.
+
+    Exceptions:
+        Catches and prints any exceptions that occur during the server operation. Ensures that the
+        client socket and server socket are closed properly in case of an error or when the server stops.
+
+    Example:
+        To use this method, ensure that the server socket is initialized and the sensor_data attribute
+        is populated with the latest sensor readings before calling this method.
+    """
         try:
             self.sock.bind(self.addr)
             self.sock.listen(5)
@@ -44,7 +113,7 @@ class Server:
                 request = self.cl.recv(1024).decode('utf-8')
                 print(f"Request: {request}")
 
-                # Use the sensor data directly from the reference
+                
                 temperature = self.sensor_data['temp']
                 humidity = self.sensor_data['humid']
                 light = self.sensor_data['light']
@@ -132,8 +201,3 @@ class Server:
             if self.cl:
                 self.cl.close()
             self.sock.close()
-
-
-
-
-

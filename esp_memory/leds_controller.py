@@ -1,13 +1,14 @@
 # Complete project details at https://RandomNerdTutorials.com
+# trying out
 
 import machine, neopixel
 
-n = 12 #numero de leds que vamos a encender
-p = 5  # el pin gpio que esta conectado
+leds_number = 12 #numero de leds que vamos a encender
+pin = 5  # el pin gpio que esta conectado
 
-np = neopixel.NeoPixel(machine.Pin(p), n) 
+neopixel_ = neopixel.NeoPixel(machine.Pin(pin), leds_number) 
 
-def set_color(r, g, b, n):  # podemos ponerlos de los colores que queramos o mezclarolos
+def set_color(r, g, b, n):  
   for i in range(n):
-    np[i] = (r, g, b)
-  np.write()
+    neopixel_[i] = (r, g, b)
+  neopixel_.write()
