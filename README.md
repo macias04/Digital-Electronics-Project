@@ -346,7 +346,7 @@ class Server:
 -Responds to HTTP requests, displaying real-time data on a dynamically updated webpage using **Chart.js**.
   
 - **`display.py`**
-```pyhton
+```python  
 from sh1106 import SH1106_I2C as sh
 
 class Display(sh):
@@ -362,7 +362,7 @@ class Display(sh):
     
     def write_text(self, text, start, row):
         self.text(text, start, row)  
-```
+ ```
 -Display class: Manages the OLED display using the SH1106 driver.
   - Methods:
   - clear_display(val=0): Clears the screen.
