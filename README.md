@@ -398,7 +398,7 @@ class SoilMoisture:
 - **`machine`**: Interacts with ESP32 hardware.
 - **`socket`**: Powers the web server.
 - **`time`**: Manipulates the time
--**`sh1106`**: Shows text and images, Creates user interfaces and Draw graphics.                                           
+- **`sh1106`**: Shows text and images, Creates user interfaces and Draw graphics.                                           
                                 
 ## Microdevices and Sensors
 
