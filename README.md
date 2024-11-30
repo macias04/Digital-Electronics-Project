@@ -68,7 +68,7 @@ def set_color(r, g, b, n):
     np[i] = (r, g, b)
   np.write()
 ```
-  -'' set_color(r, g, b, n)'' : Changes the color of the NeoPixel LEDs.
+  -*set_color(r, g, b, n) *: Changes the color of the NeoPixel LEDs.
   - 
 - **`main.py`**
 ```pyhton
