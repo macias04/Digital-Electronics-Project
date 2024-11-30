@@ -431,7 +431,7 @@ class SoilMoisture:
    - Password: `c3z35gyy`
 
 ### Connections
-
+![](esp32pins.png)
 
 | Component              | ESP32 Pin                    |
 |------------------------|------------------------------|
