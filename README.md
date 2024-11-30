@@ -407,6 +407,7 @@ class SoilMoisture:
 1. **ESP32**  
    - Acts as the main microcontroller.
    - Connects sensors and manages the web server.
+   - ![](esp32pins.png)
 
 2. **OLED Display (SH1106)**  
    - Displays real-time information.  
@@ -431,7 +432,6 @@ class SoilMoisture:
    - Password: `c3z35gyy`
 
 ### Connections
-![](esp32pins.png)
 
 | Component              | ESP32 Pin                    |
 |------------------------|------------------------------|
