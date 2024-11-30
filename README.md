@@ -426,7 +426,7 @@ class SoilMoisture:
 
 6. **NeoPixel LEDs**  
    - Controlled from GPIO 5.
-    - ![](NeoPixel-LED-Pinout.png) 
+     ![](NeoPixel-LED-Pinout.png) 
 
 7. **Buzzer**  
    - Controlled from GPIO 23.
