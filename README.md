@@ -412,6 +412,7 @@ class SoilMoisture:
 2. **OLED Display (SH1106)**  
    - Displays real-time information.  
    - Connected via I2C (GPIO 21 and GPIO 22).
+   - ![](oled.webp)
 
 3. **Soil Moisture Sensor**  
    - Detects soil moisture levels.  
