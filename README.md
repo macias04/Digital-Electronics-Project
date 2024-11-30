@@ -67,7 +67,7 @@ def set_color(r, g, b, n):
   for i in range(n):
     np[i] = (r, g, b)
   np.write()
-```
+ ```
   -**`set_color(r, g, b, n)`**: Changes the color of the NeoPixel LEDs.
   
 - **`main.py`**
@@ -198,7 +198,7 @@ except KeyboardInterrupt:
 
     # Stop program execution
     sys.exit(0)
-```
+ ```
 -Configures sensors for temperature, humidity, light, and soil moisture.
 -Starts the web server and updates the OLED screen with collected data.
 -Implements light control using a photoresistor.
@@ -341,7 +341,7 @@ class Server:
             if self.cl:
                 self.cl.close()
             self.sock.close()
-```
+ ```
 -Server class: Manages Wi-Fi connection and communication via a web server.
 -Responds to HTTP requests, displaying real-time data on a dynamically updated webpage using **Chart.js**.
   
