@@ -1,6 +1,25 @@
 # Project: Smart Plant Monitoring System with ESP32
 
-## Introduction
+<img src="./images/con1.jpeg" alt="esp32 pin out" width="400"/>
+<br>
+<br>
+<br>
+<img src="./images/con2.jpeg" alt="esp32 pin out" width="400"/>
+<br>
+
+## Quick try it out
+1. **Clone this repository:**
+   ```bash
+   git clone https://github.com/MarioLOI/Digital-Electronics-Project
+
+   Make sure you have ESP and Thonny or any micropython IDE configured and you have Python installed. 
+   Upload files in esp_memory to micropython device(ESP32).
+   Control requirements.txt for missing packages and refer to the project at the end of this file to get started. 
+<br>
+<img src="./images/flowchart.jpeg" alt="esp32 pin out" width="1200"/>
+<br>
+
+## A note about this repository
 Measurement/Control/Visualization of the environment for tropical plants :
 The goal of the project would be to create a system that measures key environmental parameters (such as temperature, humidity, light levels, soil moisture) for tropical plants.
 This system should also allow the user to control or adjust environmental conditions and visualize the data.
@@ -16,7 +35,7 @@ Additionally, a foundational knowledge of timers, displays, and synchronous/asyn
 Subsequently, we will create or utilize the files outlined later and upload them to the ESP32 to enable the use of these modules when executed from the main program.
 
 ## Main Features
-I2C communication:
+#### I2C communication:
 I2C, which stands for Inter-Integrated Circuit, is a simple, low-speed serial communication protocol commonly used for short-distance communication between integrated circuits on a single printed circuit board.
 It's particularly popular in embedded systems due to its simplicity and low cost.
 I2C (Inter-Integrated Circuit, I2C, IIC, [eye-squared-C]) is two-wire, synchronous,bi-directional, half-duplex, short-distance, intra-board, serial bus communication
@@ -24,9 +43,10 @@ SCL (one-directional Serial Clock), SDA (bi-directional Serial Data) signals
 One Master, one or more Slave devices
 Communication protocol consists of: Start condition, Address frame, Data frame, Stop condition.
 
-(Add image of the I2C communication) 
+<img src="./images/I2C.png" alt="esp32 pin out"         width="700"/>
+ 
 
-Photoresistor:
+#### Photoresistor:
 A photoresistor, also known as a Light-Dependent Resistor (LDR) or photoconductor, is an electronic component whose electrical resistance varies depending on the amount of light that falls on it.
 In simpler terms, the more light it receives, the lower its resistance becomes.
 How does it work?
@@ -34,408 +54,74 @@ When light hits the semiconductor material of a photoresistor, photons (particle
 This increased movement of electrons reduces the overall resistance of the material.
 
 
-Soil moisture:
+#### Soil moisture:
 Soil moisture refers to the amount of water present in the soil. It's a critical factor for life on Earth, influencing:
 Plant growth: Water is essential for plants to absorb nutrients and perform photosynthesis.
 Biogeochemical cycles: Soil moisture plays a crucial role in the water, carbon, and other element cycles.
 Soil stability: Moisture affects soil structure and its ability to resist erosion.
 Climate: Evaporation of water from the soil influences atmospheric humidity and precipitation.
 
-Display:
+#### Display:
 LCD (Liquid Crystal Display) is an electronic device which is used for display any ASCII text. There are many different screen sizes e.g. 16x1, 16x2, 16x4, 20x4, 40x4 characters and each character is made of 5x8 matrix pixel dots.
 LCD displays have different LED back-light in yellow-green, white and blue color. LCD modules are mostly available in COB (Chip-On-Board) type.
 With this method, the controller IC chip or driver (here: HD44780) is directly mounted on the backside of the LCD module itself.
 
-Web page:
+#### Web page:
 A threading library provides a way to manage multiple threads of execution within a single process.
 In the context of web development, threading allows you to handle multiple tasks concurrently, improving the responsiveness of your application.
 Then we developed a web page for showing data after reading it. We did it focused on the purpose of controlling data faster and automatically.
-Also we can see if any value is lower or higher inmediatly and react to that.
+Also we can see if any value is lower or higher immediatly and react to that.
 
-(add image of the web page)
+<img src="./images/web_page.jpeg" alt="esp32 pin out"         width="1200"/>
 
-
-### Classes and Methods
-- **`leds_controller.py`**
--Module where we defined the method set_color
-```python
-import machine, neopixel
-n = 12 
-p = 5  
-np = neopixel.NeoPixel(machine.Pin(p), n) 
-def set_color(r, g, b, n): 
-  for i in range(n):
-    np[i] = (r, g, b)
-  np.write()
- ```
-  -**`set_color(r, g, b, n)`**: Changes the color of the NeoPixel LEDs.
-  
-- **`main.py`**
-```python
-import time
-import threading
-from machine import I2C, Pin, ADC 
-from sh1106 import SH1106_I2C
-import sys
-from led_light import Light
-from server import Server
-# from web_page import Server
-from display import Display
-from soil_moisture import SoilMoisture
-# from buzzer import Buzzer
-
-# Initialization of sensors
-i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=400_000)
-photoresistor = ADC(Pin(36))
-photoresistor.atten(ADC.ATTN_11DB)
-soil_moisture = SoilMoisture(35)
-# buzz = Buzzer(23)
-# soil_moisture.zero_adc()  # Call this to zero the ADC
-
-
-# Initialization of the OLED display
-display = Display(i2c, 50)
-
-# DHT12
-SENSOR_ADDR = 0x5c  # Change according to the sensor
-
-# Scan I2C devices
-print("Stop execution `Ctrl+C`.")
-print("Looking for I2C... ", end="")
-addrs = i2c.scan()
-
-if SENSOR_ADDR in addrs:
-    print(f"{hex(SENSOR_ADDR)} is detected")
-else:
-    print("[ERROR] Sensor not detected. Check connections.")
-    raise Exception("Sensor I2C not found.")
-
-# Shared data structure for sensor readings
-sensor_data = {
-    'temp': 0,
-    'humid': 0,
-    'light': 0,
-    'soil': 0
-}
-
-
-
-ip = '192.168.189.208' 
-
-def run_server():
-    server = Server(sensor_data)  # Pass the reference to sensor_data
-    ip = server.ip_address
-    while True:
-        time.sleep(1)  # Keep the server running
-
-    return ip
-# Start the server in a separate thread
-server_thread = threading.Thread(target=run_server)
-server_thread.daemon = True  # This allows the thread to exit when the main program exits
-server_thread.start()
-
-
-try:
-    while True:
-        # Clear display
-        display.clear_display()
-
-        # Get sensors data
-        try:
-            temp_humi_data = i2c.readfrom_mem(SENSOR_ADDR, 0, 4)
-            humi_val = temp_humi_data[0] + temp_humi_data[1]
-            temp_val = temp_humi_data[2] + temp_humi_data[3]
-            value_moisture = soil_moisture.update_soil_value()
-            print(f"Main Soil >>> ---- {type(value_moisture)}")
-            s_moisture = value_moisture/1800 * 100
-            print(s_moisture)
-            '''
-            if value_moisture < 32500:
-                buzz.sound_buzzer(1)
-            else:
-                buzz.sound_buzzer(0)
-            '''
-            temperature = f"{temp_val:.1f}C"
-            humidity = f"{humi_val:.1f} %"
-            soil_moi_val = f'{s_moisture} %'
-            
-        except Exception as e:
-            print(f"Error reading the sensor: {e}")
-
-        # Reading ambient light
-        lux_val = photoresistor.read()
-        lux_percentage = lux_val / 4100 * 100 
-        luz = f"{lux_percentage:.1f} %"
-        light = Light(lux_val)
-        light.light_control()
-        
-        # Show data on the display
-        display.write_text(f"Digi Mola", 0, 0)
-        display.write_text(f"Temperature: {temperature}", 0, 10)
-        display.write_text(f"Humidity: {humidity}", 0, 20)
-        display.write_text(f"Light: {luz}", 0, 30)
-        display.write_text(f"Soil: {soil_moi_val}", 0, 40)
-        display.write_text(f"{ip}", 0, 50)
-
-
-        # Update the display
-        display.show_display()
-        
-        # Update shared sensor data
-        sensor_data['temp'] = float(temp_val)
-        sensor_data['humid'] = float(humi_val)
-        sensor_data['light'] = float(round(lux_percentage, 2))
-        sensor_data['soil'] = float(s_moisture)
-        
-        time.sleep(1)
-
-except KeyboardInterrupt:
-    print("Program stopped. Exiting...")
-
-    # clean up the display
-    display.clear_display()
-    display.show_display()
-
-    # Stop program execution
-    sys.exit(0)
- ```
--Configures sensors for temperature, humidity, light, and soil moisture.
--Starts the web server and updates the OLED screen with collected data.
--Implements light control using a photoresistor.
--Runs the server in a separate thread for real-time data updates.
-
-- **`server.py`**
--Module where we defined the WiFi connections and the server for the web page
-```python
-import network
-import socket
-import time
-
-SSID = 'IWN'
-PASSWORD = 'c3z35gyy'
-
-class Server:
-    
-    def __init__(self, sensor_data):
-        self.sensor_data = sensor_data  # Store a reference to the sensor data
-        self.sock = socket.socket()
-        self.cl = None
-        self.addr = socket.getaddrinfo('0.0.0.0', 80)[0][4]
-        self.ip_address = self.connect_wifi()
-        self.web_server()
-
-    def connect_wifi(self):
-        wlan = network.WLAN(network.STA_IF)
-        wlan.active(False)  # Disable the Wi-Fi interface
-        time.sleep(1)       # Wait a moment
-        wlan.active(True)   # Re-enable the Wi-Fi interface
-        wlan.connect(SSID, PASSWORD)
-
-        # Wait for connection
-        while not wlan.isconnected():
-            print("Connecting to WiFi...")
-            time.sleep(1)
-
-        print("Connected to WiFi")
-        self.ip_address = wlan.ifconfig()[0]  # Get the IP address
-        print("IP Address:", self.ip_address)
-        return self.ip_address
-
-    def web_server(self):
-        try:
-            self.sock.bind(self.addr)
-            self.sock.listen(5)
-            print('Listening on', self.addr)
-
-            while True:
-                self.cl, self.addr = self.sock.accept()
-                print('Client connected from', self.addr)
-                request = self.cl.recv(1024).decode('utf-8')
-                print(f"Request: {request}")
-
-                # Use the sensor data directly from the reference
-                temperature = self.sensor_data['temp']
-                humidity = self.sensor_data['humid']
-                light = self.sensor_data['light']
-                soil_moisture_val = self.sensor_data['soil']
-
-                if "GET /data" in request:
-                    response = f"""HTTP/1.0 200 OK\r\nContent-Type: application/json\r\n\r\n{{
-                        "temperature": {temperature},
-                        "humidity": {humidity},
-                        "light": {light},
-                        "soil_moisture": {soil_moisture_val}
-                    }}"""
-                else:
-                    response = """HTTP/1.0 200 OK\r\nContent-Type: text/html\r\n\r\n
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>ESP32 Sensor Data</title>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    </head>
-                    <body>
-                        <h1>Sensor Data</h1>
-                        <canvas id="myChart" width="400" height="200"></canvas>
-                        <script>
-                            async function fetchData() {
-                                const response = await fetch('/data');
-                                const data = await response.json();
-                                return data;
-                            }
-
-                            async function updateChart(chart) {
-                                const data = await fetchData();
-                                chart.data.datasets[0].data = [
-                                    data.temperature,
-                                    data.humidity,
-                                    data.light,
-                                    data.soil_moisture
-                                ];
-                                chart.update();
-                            }
-
-                            const ctx = document.getElementById('myChart').getContext('2d');
-                            const myChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: ['Temperature', 'Humidity', 'Light', 'Soil Moisture'],
-                                    datasets: [{
-                                        label: 'Sensor Values',
-                                        data: [0, 0, 0, 0],
-                                        backgroundColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)'
-                                        ],
-                                        borderColor: [
-                                            'rgba(255, 99, 132, 1)',
-                                            'rgba(54, 162, 235, 1)',
-                                            'rgba(255, 206, 86, 1)',
-                                            'rgba(75, 192, 192, 1)'
-                                        ],
-                                        borderWidth: 2
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-
-                            setInterval(() => updateChart(myChart), 5000);
-                        </script>
-                    </body>
-                    </html>"""
-                
-                self.cl.send(response.encode('utf-8'))
-                self.cl.close()
-
-        except Exception as e:
-            print(f"Error in web server: {e}")
-        finally:
-            if self.cl:
-                self.cl.close()
-            self.sock.close()
- ```
--Server class: Manages Wi-Fi connection and communication via a web server.
--Responds to HTTP requests, displaying real-time data on a dynamically updated webpage using **Chart.js**.
-  
-- **`display.py`**
-```python  
-from sh1106 import SH1106_I2C as sh
-
-class Display(sh):
-    def __init__(self, i2c, contrast):
-        super().__init__(i2c)  
-        self.contrast(contrast)
-
-    def clear_display(self, val=0):
-        self.fill(val) 
-    
-    def show_display(self):
-        self.show() 
-    
-    def write_text(self, text, start, row):
-        self.text(text, start, row)  
- ```
--Display class: Manages the OLED display using the SH1106 driver.
-  - Methods:
-  - clear_display(val=0): Clears the screen.
-  - how_display(): Refreshes the screen to show new content.
-  - write_text(text, start, row): Writes text at a specific position.
-
-- **`buzzer.py`**  
-  - Buzzer class: Controls a buzzer using PWM.
-  - Method:
-  - sound_buzzer(x): Activates the buzzer (1 for on, 0 for off).
-
-- **`soil_moisture.py`**
-```python
-from machine import ADC, Pin
-import time
-
-class SoilMoisture:    
-    def __init__(self, pin_number):
-        self.soil_adc = ADC(Pin(pin_number))  # Initialize ADC on the specified pin
-        self.soil_adc.atten(ADC.ATTN_11DB)
-        
-    def update_soil_value(self):
-        adc_soil_value = self.soil_adc.read()  # Read the ADC value
-        print("ADC Value is -----> %d" % adc_soil_value)
-        return adc_soil_value
- ```
-  - SoilMoisture class: Reads soil moisture levels.
-  - Method:
-  - update_soil_value(): Returns the current ADC value of soil moisture.
 
 ### External Modules
+- **`threading`**: Allows parallel runtime for server application
 - **`neopixel`**: Controls the NeoPixel LEDs.
 - **`machine`**: Interacts with ESP32 hardware.
 - **`socket`**: Powers the web server.
 - **`time`**: Manipulates the time
 - **`sh1106`**: Shows text and images, Creates user interfaces and Draw graphics.                                           
                                 
-## Microdevices and Sensors
+### Microdevices and Sensors
 
 (add images of the sensors)
 
 1. **ESP32**  
    - Acts as the main microcontroller.
    - Connects sensors and manages the web server.
-   - ![](esp32pins.png)
+
+   <img src="./images/esp32pins.png" alt="esp32 pin out" width="1200"/>
 
 2. **OLED Display (SH1106)**  
    - Displays real-time information.  
    - Connected via I2C (GPIO 21 and GPIO 22).
-   - ![](oled.webp)
+   <img src="./images/oled.webp" alt="oled display" width="300"/>
+
 
 3. **Soil Moisture Sensor**
    - Detects soil moisture levels.
    - Model: TD-SEN18 (need 3v3 power supply)
    - Connected to ESP32 ADC (GPIO 35).
-   - ![](soil_moisture)
+   <img src="./images/soil_moisture.webp" alt="capacitive soil moisture sensor" width="300"/>
+
+
 5. **Photoresistor**  
    - Measures ambient light.  
    - Connected to analog pin 36.
-   - ![](photoresistor.webp)
+   <img src="./images/photoresistor.webp" alt="photoresistor" width="300"/>
+
 
 6. **NeoPixel LEDs**  
    - Controlled from GPIO 5.
-   - ![](NeoPixel-LED-Pinout.png) 
+   <img src="./images/neopixl.png" alt="NeoPixel-LED-Pinout" width="300"/>
 
 7. **Buzzer**  
    - Controlled from GPIO 23.
 
-8. **Wi-Fi**  
-   - SSID: `IWN`  
-   - Password: `c3z35gyy`
 
 ### Connections
+   <img src="./images/logi.jpeg" alt="wokwi connection simulation" width="700"/>
 
 | Component              | ESP32 Pin                    |
 |------------------------|------------------------------|
@@ -446,8 +132,19 @@ class SoilMoisture:
 | Buzzer                 | GPIO 23                      |
 
                                                
-## Installation and Usage
+### Installation and Usage
 
 1. **Clone this repository:**
    ```bash
    git clone https://github.com/MarioLOI/Digital-Electronics-Project
+
+Make sure you have ESP and Thonny or any micropython IDE configured and you have Python installed. 
+Upload files in esp_memory to micropython device memory with save as -> micropython device.
+Control requirements.txt for missing packages and install them using Thonny package manager under "Tool"
+Set up your wifi password to file server.py
+Then start.
+
+### Authors:
+- Gerson Hauwanga https://github.com/ghauwanga
+- Adrián Macias https://github.com/macias04
+- Mario Loizaga https://github.com/MarioLOI
