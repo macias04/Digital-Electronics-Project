@@ -407,26 +407,26 @@ class SoilMoisture:
 1. **ESP32**  
    - Acts as the main microcontroller.
    - Connects sensors and manages the web server.
-   - ![](esp32pins.png)
+    ![](esp32pins.png)
 
 2. **OLED Display (SH1106)**  
    - Displays real-time information.  
    - Connected via I2C (GPIO 21 and GPIO 22).
-   - ![](oled.webp)
+    ![](oled.webp)
 
 3. **Soil Moisture Sensor**
    - Detects soil moisture levels.
    - Model: TD-SEN18 (need 3v3 power supply)
    - Connected to ESP32 ADC (GPIO 35).
-   - 
+     ![](soil_moisture)
 5. **Photoresistor**  
    - Measures ambient light.  
    - Connected to analog pin 36.
-   - ![](photoresistor.webp)
+    ![](photoresistor.webp)
 
 6. **NeoPixel LEDs**  
    - Controlled from GPIO 5.
-   - - ![](NeoPixel-LED-Pinout.png) 
+    - ![](NeoPixel-LED-Pinout.png) 
 
 7. **Buzzer**  
    - Controlled from GPIO 23.
