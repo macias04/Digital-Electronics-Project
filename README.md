@@ -418,13 +418,15 @@ class SoilMoisture:
    - Detects soil moisture levels.
    - Model: TD-SEN18 (need 3v3 power supply)
    - Connected to ESP32 ADC (GPIO 35).
-
+   - 
 5. **Photoresistor**  
    - Measures ambient light.  
    - Connected to analog pin 36.
+   - ![](photoresistor.webp)
 
 6. **NeoPixel LEDs**  
    - Controlled from GPIO 5.
+   - - ![](stripleds.png)
 
 7. **Buzzer**  
    - Controlled from GPIO 23.
