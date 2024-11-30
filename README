@@ -14,7 +14,40 @@ By programming in MicroPython, we can create, delete, modify, automate, control,
 To achieve this, it is essential to have a solid understanding of MicroPython and the ability to write efficient code that aligns with our objectives.
 Additionally, a foundational knowledge of timers, displays, and synchronous/asynchronous communication is beneficial for comprehending the operation of microcontrollers and sensors.
 Subsequently, we will create or utilize the files outlined later and upload them to the ESP32 to enable the use of these modules when executed from the main program.
+
 ## Main Features
+I2C communication:
+I2C, which stands for Inter-Integrated Circuit, is a simple, low-speed serial communication protocol commonly used for short-distance communication between integrated circuits on a single printed circuit board.
+It's particularly popular in embedded systems due to its simplicity and low cost.
+I2C (Inter-Integrated Circuit, I2C, IIC, [eye-squared-C]) is two-wire, synchronous,bi-directional, half-duplex, short-distance, intra-board, serial bus communication
+SCL (one-directional Serial Clock), SDA (bi-directional Serial Data) signals
+One Master, one or more Slave devices
+Communication protocol consists of: Start condition, Address frame, Data frame, Stop condition.
+
+Photoresistor:
+A photoresistor, also known as a Light-Dependent Resistor (LDR) or photoconductor, is an electronic component whose electrical resistance varies depending on the amount of light that falls on it.
+In simpler terms, the more light it receives, the lower its resistance becomes.
+How does it work?
+When light hits the semiconductor material of a photoresistor, photons (particles of light) provide energy to electrons, allowing them to move more freely. 
+This increased movement of electrons reduces the overall resistance of the material.
+
+Soil moisture:
+Soil moisture refers to the amount of water present in the soil. It's a critical factor for life on Earth, influencing:
+Plant growth: Water is essential for plants to absorb nutrients and perform photosynthesis.
+Biogeochemical cycles: Soil moisture plays a crucial role in the water, carbon, and other element cycles.
+Soil stability: Moisture affects soil structure and its ability to resist erosion.
+Climate: Evaporation of water from the soil influences atmospheric humidity and precipitation.
+
+Display:
+LCD (Liquid Crystal Display) is an electronic device which is used for display any ASCII text. There are many different screen sizes e.g. 16x1, 16x2, 16x4, 20x4, 40x4 characters and each character is made of 5x8 matrix pixel dots.
+LCD displays have different LED back-light in yellow-green, white and blue color. LCD modules are mostly available in COB (Chip-On-Board) type.
+With this method, the controller IC chip or driver (here: HD44780) is directly mounted on the backside of the LCD module itself.
+
+Web page:
+A threading library provides a way to manage multiple threads of execution within a single process.
+In the context of web development, threading allows you to handle multiple tasks concurrently, improving the responsiveness of your application.
+Then we developed a web page for showing data after reading it. We did it focused on the purpose of controlling data faster and automatically.
+Also we can see if any value is lower or higher inmediatly and react to that.
 
 ### Classes and Methods
 - **`leds_controller.py`** *Get-Content leds_controller.py | Out-File -Append README.md*  
@@ -58,7 +91,6 @@ def set_color(r, g, b, n):
 - **`socket`**: Powers the web server.
 - **`time`**: Manipulates the time                                               
                                 
-
 ## Microdevices and Sensors
 
 1. **ESP32**  
