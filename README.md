@@ -67,10 +67,9 @@ def set_color(r, g, b, n):
   for i in range(n):
     np[i] = (r, g, b)
   np.write()
-
-  - `set_color(r, g, b, n)`: Changes the color of the NeoPixel LEDs.
-
-
+```
+  -'' set_color(r, g, b, n)'' : Changes the color of the NeoPixel LEDs.
+  - 
 - **`main.py`**
 ```pyhton
 import time
@@ -199,7 +198,7 @@ except KeyboardInterrupt:
 
     # Stop program execution
     sys.exit(0)
-
+```
   - Configures sensors for temperature, humidity, light, and soil moisture.
   - Starts the web server and updates the OLED screen with collected data.
   - Implements light control using a photoresistor.
@@ -342,8 +341,8 @@ class Server:
             if self.cl:
                 self.cl.close()
             self.sock.close()
-
-  - `Server` class: Manages Wi-Fi connection and communication via a web server.
+```
+  - ''Server'' class: Manages Wi-Fi connection and communication via a web server.
   - Responds to HTTP requests, displaying real-time data on a dynamically updated webpage using **Chart.js**.
   
 - **`display.py`**
@@ -363,17 +362,17 @@ class Display(sh):
     
     def write_text(self, text, start, row):
         self.text(text, start, row)  
-
-  - `Display` class: Manages the OLED display using the SH1106 driver.
+```
+  - ''Display'' class: Manages the OLED display using the SH1106 driver.
   - Methods:
-    - `clear_display(val=0)`: Clears the screen.
-    - `show_display()`: Refreshes the screen to show new content.
-    - `write_text(text, start, row)`: Writes text at a specific position.
+    - clear_display(val=0): Clears the screen.
+    - show_display(): Refreshes the screen to show new content.
+    - write_text(text, start, row): Writes text at a specific position.
 
 - **`buzzer.py`**  
-  - `Buzzer` class: Controls a buzzer using PWM.
+  - ''Buzzer'' class: Controls a buzzer using PWM.
   - Method:
-    - `sound_buzzer(x)`: Activates the buzzer (1 for on, 0 for off).
+    - sound_buzzer(x): Activates the buzzer (1 for on, 0 for off).
 
 - **`soil_moisture.py`**
 ```python
@@ -389,10 +388,10 @@ class SoilMoisture:
         adc_soil_value = self.soil_adc.read()  # Read the ADC value
         print("ADC Value is -----> %d" % adc_soil_value)
         return adc_soil_value
- 
-  - `SoilMoisture` class: Reads soil moisture levels.
+ ```
+  - ''SoilMoisture'' class: Reads soil moisture levels.
   - Method:
-    - `update_soil_value()`: Returns the current ADC value of soil moisture.
+    - update_soil_value(): Returns the current ADC value of soil moisture.
 
 ### External Modules
 - **`neopixel`**: Controls the NeoPixel LEDs.
