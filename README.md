@@ -414,21 +414,22 @@ class SoilMoisture:
    - Connected via I2C (GPIO 21 and GPIO 22).
    - ![](oled.webp)
 
-3. **Soil Moisture Sensor**  
-   - Detects soil moisture levels.  
+3. **Soil Moisture Sensor**
+   - Detects soil moisture levels.
+   - Model: TD-SEN18 (need 3v3 power supply)
    - Connected to ESP32 ADC (GPIO 35).
 
-4. **Photoresistor**  
+5. **Photoresistor**  
    - Measures ambient light.  
    - Connected to analog pin 36.
 
-5. **NeoPixel LEDs**  
+6. **NeoPixel LEDs**  
    - Controlled from GPIO 5.
 
-6. **Buzzer**  
+7. **Buzzer**  
    - Controlled from GPIO 23.
 
-7. **Wi-Fi**  
+8. **Wi-Fi**  
    - SSID: `IWN`  
    - Password: `c3z35gyy`
 
