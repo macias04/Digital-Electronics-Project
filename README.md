@@ -150,7 +150,7 @@ Then start.
 - Mario Loizaga https://github.com/MarioLOI
 
 ### References:
-- Soil Moisture [Link Text]([#this-heading-is-not-unique-in-the-file-1](https://github.com/shillehbean/youtube-channel/blob/main/capcitive_values.py)).
+- Soil Moisture (https://github.com/shillehbean/youtube-channel/blob/main/capcitive_values.py)
 - I2C operations
 - Photoresistor
 - sh1106 module
