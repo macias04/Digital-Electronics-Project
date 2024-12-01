@@ -155,3 +155,5 @@ Then start.
 - [I2C operations](https://docs.micropython.org/en/v1.13/library/machine.I2C.html)
 - [Photoresistor](https://esp32io.com/tutorials/esp32-light-sensor)
 - [sh1106 module](https://github.com/tomas-fryza/esp-micropython/tree/main/modules)
+- [Strip LEDS](https://randomnerdtutorials.com/micropython-ws2812b-addressable-rgb-leds-neopixel-esp32-esp8266/)
+- [Buzzer](https://wokwi.com/projects/397532117199559681)
