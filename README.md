@@ -4,7 +4,7 @@
 <br>
 <br>
 <br>
-<img src="./images/con2.jpeg" alt="esp32 pin out" width="400"/>
+<img src="images/Humidity_high.jpg" alt="esp32 pin out" width="400"/>
 <br>
 
 ## Quick try it out
