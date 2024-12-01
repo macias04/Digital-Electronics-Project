@@ -148,3 +148,9 @@ Then start.
 - Gerson Hauwanga https://github.com/ghauwanga
 - Adrián Macias https://github.com/macias04
 - Mario Loizaga https://github.com/MarioLOI
+
+### References:
+- Soil Moisture [Link Text]([#this-heading-is-not-unique-in-the-file-1](https://github.com/shillehbean/youtube-channel/blob/main/capcitive_values.py)).
+- I2C operations
+- Photoresistor
+- sh1106 module
