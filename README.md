@@ -85,8 +85,6 @@ Also we can see if any value is lower or higher immediatly and react to that.
                                 
 ### Microdevices and Sensors
 
-(add images of the sensors)
-
 1. **ESP32**  
    - Acts as the main microcontroller.
    - Connects sensors and manages the web server.
